@@ -1,0 +1,17 @@
+---
+- name: Jenkins triggered Ansible Playbook
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Start nginx
+      service:
+        name: nginx
+        state: started
+        enabled: true

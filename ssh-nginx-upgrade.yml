@@ -1,0 +1,33 @@
+---
+- name: Upgrade nginx and SSH
+  hosts: web
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: latest
+      notify: Restart nginx
+
+    - name: Upgrade openssh-server
+      ansible.builtin.apt:
+        name: openssh-server
+        state: latest
+
+    - name: Ensure SSH service is running
+      ansible.builtin.service:
+        name: ssh
+        state: started
+
+  handlers:
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
