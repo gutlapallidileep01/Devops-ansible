@@ -3,6 +3,13 @@
   hosts: localhost
   gather_facts: false
   tasks:
+
+   - name: Creating S3 buckets
+     amazon.aws.s3_bucket:
+       name: "demo-ansible-1234-{{ item }}"
+       state: present
+     loop: [1,2,3]
+
    - name: List all the s3 buckets
      amazon.aws.s3_bucket_info:
      register: result
